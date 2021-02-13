@@ -30,10 +30,11 @@ public class DaoUsuario {
 		try {
 			
 
-		String sql = "insert into usuario(login, senha) values (?, ?)";
+		String sql = "insert into usuario(login, senha) values (?, ?, ?)";
 		PreparedStatement insert = connection.prepareStatement(sql);
-		insert.setString(1, usuario.getLogin());
-		insert.setString(2, usuario.getSenha());
+		insert.setLong(1, usuario.getId());
+		insert.setString(2, usuario.getLogin());
+		insert.setString(3, usuario.getSenha());
 		insert.execute();
 		connection.commit();
 		} catch (Exception e) {
@@ -87,6 +88,25 @@ public class DaoUsuario {
 		
 			
 		
+	}
+
+	public BeanCursoJsp consultar(String login) throws Exception {
+		// TODO Auto-generated method stub
+		
+		String sql = "select * from usuario where login = '" + login + "'";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (resultSet.next()) {
+			
+			BeanCursoJsp beanCursoJsp = new BeanCursoJsp();
+			beanCursoJsp.setLogin(resultSet.getString("login"));
+			beanCursoJsp.setSenha(resultSet.getString("senha"));
+			
+			return beanCursoJsp;
+			
+		}
+		return null;
 	}
 
 }
